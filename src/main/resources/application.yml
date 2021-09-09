@@ -6,8 +6,9 @@
 #    username: bootuser
 #    password: 1234
 
-
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/short-url
+      host: localhost
+      port: 27017
+      database: short-url
