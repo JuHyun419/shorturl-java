@@ -1,6 +1,6 @@
 package com.juhyun.shorturl.entity;
 
-import com.juhyun.shorturl.controller.dto.ShortUrlResponse;
+import com.juhyun.shorturl.controller.dto.ReadShortUrlResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -19,30 +20,34 @@ import javax.validation.constraints.NotBlank;
 @ToString
 @Document(collection = "shorturl")
 public class ShortUrl {
-팅
+
+    @Transient
+    public static final String SEQUENCE_NAME = "shorturl_sequence";
+
     @Id
-    private String id;
+    private Long _id;
 
     @NotBlank(message = "shortUrl must not be blank")
     private String shortUrl;
 
-    private String originUrl;
+    @NotBlank(message = "longUrl must not be blank")
+    private String longUrl;
 
     private String customUrl;
 
     private Integer requestCount;
 
+    public void setId(Long _id) {
+        this._id = _id;
+    }
+
     public void increaseRequestCount() {
         this.requestCount++;
     }
 
-    public static ShortUrlResponse entityToDto(ShortUrl entity) {
-        return ShortUrlResponse.builder()
-                .id(entity.id)
-                .shortUrl(entity.shortUrl)
-                .originUrl(entity.originUrl)
-                .customUrl(entity.customUrl)
-                .requestCount(entity.requestCount)
+    public static ReadShortUrlResponse entityToDto(ShortUrl entity) {
+        return ReadShortUrlResponse.builder()
+                .shortUrl(entity.getShortUrl())
                 .build();
     }
 }
