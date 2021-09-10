@@ -4,11 +4,10 @@ import com.juhyun.shorturl.entity.ShortUrl;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface ShortUrlRepository extends MongoRepository<ShortUrl, String> {
+public interface ShortUrlRepository extends MongoRepository<ShortUrl, String>, ShortUrlRepositoryCustom {
 
-    ShortUrl findByOriginUrl(String originUrl);
+    //@Query("{originUrl :?originUrl}")
+    ShortUrl findByLongUrl(String longUrl);
 
 }

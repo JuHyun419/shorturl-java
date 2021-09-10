@@ -6,17 +6,19 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigInteger;
+
 @Getter
 @Setter
 @Builder
 @ToString
 public class ShortUrlResponse {
 
-    private String id;
+    private Long id;
 
     private String shortUrl;
 
-    private String originUrl;
+    private String longUrl;
 
     private String customUrl;
 
@@ -24,9 +26,9 @@ public class ShortUrlResponse {
 
     public static ShortUrl dtoToEntity(ShortUrlResponse dto) {
         return ShortUrl.builder()
-                .id(dto.id)
+                ._id(dto.id)
                 .shortUrl(dto.shortUrl)
-                .originUrl(dto.originUrl)
+                .longUrl(dto.longUrl)
                 .customUrl(dto.customUrl)
                 .requestCount(dto.requestCount)
                 .build();

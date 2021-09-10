@@ -10,8 +10,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class ShortUrlRequest {
 
-    @NotBlank(message = "originUrl must not be blank")
-    private String originUrl;
+    @NotBlank(message = "longUrl must not be blank")
+    private String longUrl;
 
     private String customUrl;
 
