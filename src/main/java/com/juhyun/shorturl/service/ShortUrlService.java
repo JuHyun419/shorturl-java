@@ -1,55 +1,57 @@
 package com.juhyun.shorturl.service;
 
+import com.juhyun.shorturl.controller.dto.ReadShortUrlResponse;
 import com.juhyun.shorturl.controller.dto.ShortUrlRequest;
-import com.juhyun.shorturl.controller.dto.ShortUrlResponse;
 import com.juhyun.shorturl.entity.ShortUrl;
 import com.juhyun.shorturl.repository.ShortUrlRepository;
+import com.juhyun.shorturl.util.TinyUrl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ShortUrlService {
 
     private final ShortUrlRepository shortUrlRepository;
 
-    public ShortUrlService(ShortUrlRepository shortUrlRepository) {
-        this.shortUrlRepository = shortUrlRepository;
-    }
-
-    @Transactional(readOnly = true)
-    public List<ShortUrlResponse> findAll() {
-        List<ShortUrl> shortUrlList = shortUrlRepository.findAll();
-
-        return shortUrlList.stream()
-                .map(ShortUrl::entityToDto)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
-    public ShortUrlResponse create(ShortUrlRequest request) {
+    public ReadShortUrlResponse create(ShortUrlRequest request) {
         Assert.notNull(request, "ShortUrlRequest must not be null");
 
-        ShortUrl originUrl = shortUrlRepository.findByOriginUrl(request.getOriginUrl());
+        // TODO: url 유효성 검사
 
-        // 기존에 존재하는 경우
+        /* 클라이언트가 요청한 longUrl이 DB에 존재하는 경우 */
+        ShortUrl originUrl = shortUrlRepository.findByLongUrl(request.getLongUrl());
         if (existOriginUrl(originUrl)) {
-            log.info("exist");
-            originUrl.increaseRequestCount();
-            shortUrlRepository.save(originUrl);
             return ShortUrl.entityToDto(originUrl);
         }
 
-        // 2) 존재하지 않으면 -> 등록 후 shortUrl 만든 후 리턴
+        /*
+          클라이언트가 요청한 longUrl이 DB에 존재하지 않는 경우
+          1) id 생성
+          2) shortUrl 생성
+          3) ShortUrl Entity 생성
+          4) 저장 후 리턴
+         */
+        long maxId = shortUrlRepository.findMaxShortUrl().get_id() + 1;
+        log.info("Service MaxId: " + maxId);
 
+        String shortUrl = TinyUrl.idToShortUrl(maxId);
+        ShortUrl entity = ShortUrl.builder()
+                .shortUrl(shortUrl)
+                .longUrl(request.getLongUrl())
+                .customUrl(request.getCustomUrl())
+                .requestCount(1)
+                .build();
 
+        ShortUrl newEntity = shortUrlRepository.save(entity);
 
-        return null;
+        return ShortUrl.entityToDto(newEntity);
     }
 
     private boolean existOriginUrl(ShortUrl originUrl) {
