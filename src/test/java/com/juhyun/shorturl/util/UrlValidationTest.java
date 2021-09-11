@@ -37,6 +37,18 @@ class UrlValidationTest {
     }
 
     @Test
+    void 특정_스키마를_설정한_url은_통과한다() {
+        // given
+        String[] schemes = {"ftp", "ldap", "juhyun"};
+        String url1 = "ldap://foo.bar.com";
+        String url2 = "juhyun://foo.bar.com";
+
+        // when & then
+        assertThat(isValidUrl(schemes, url1)).isEqualTo(true);
+        assertThat(isValidUrl(schemes, url2)).isEqualTo(true);
+    }
+
+    @Test
     void 유효하지않은_url은_실패한다() {
         // given
         String failUrl1 = "foo.bar.com";
@@ -49,15 +61,4 @@ class UrlValidationTest {
         assertThat(isValidUrl(failUrl3)).isEqualTo(false);
     }
 
-    @Test
-    void 특정_스키마를_설정한_url은_통과한다() {
-        // given
-        String[] schemes = {"ftp", "ldap", "juhyun"};
-        String url1 = "ldap://foo.bar.com";
-        String url2 = "juhyun://foo.bar.com";
-
-        // when & then
-        assertThat(isValidUrl(schemes, url1)).isEqualTo(true);
-        assertThat(isValidUrl(schemes, url2)).isEqualTo(true);
-    }
 }
