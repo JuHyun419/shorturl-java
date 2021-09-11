@@ -6,6 +6,16 @@ public class UrlValidation {
 
     private UrlValidation () { }
 
+    public static void checkUrl(String url) {
+        checkUrl(null, url);
+    }
+
+    public static void checkUrl(String[] schemes, String url) {
+        if (isValidUrl(schemes, url)) {
+            throw new RuntimeException("요청하신 url(" + url + ")이 올바르지 않습니다.");
+        }
+    }
+
     public static boolean isValidUrl(String url) {
         return isValidUrl(null, url);
     }
