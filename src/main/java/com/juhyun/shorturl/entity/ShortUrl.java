@@ -1,6 +1,7 @@
 package com.juhyun.shorturl.entity;
 
 import com.juhyun.shorturl.controller.dto.ReadShortUrlResponse;
+import com.juhyun.shorturl.controller.dto.ShortUrlResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,9 +46,18 @@ public class ShortUrl {
         this.requestCount++;
     }
 
-    public static ReadShortUrlResponse entityToDto(ShortUrl entity) {
+    public static ReadShortUrlResponse entityToReadDto(ShortUrl entity) {
         return ReadShortUrlResponse.builder()
                 .shortUrl(entity.getShortUrl())
+                .build();
+    }
+
+    public static ShortUrlResponse entityToResponseDto(ShortUrl entity) {
+        return ShortUrlResponse.builder()
+                ._id(entity.get_id())
+                .shortUrl(entity.getShortUrl())
+                .longUrl(entity.getLongUrl())
+                .requestCount(entity.getRequestCount())
                 .build();
     }
 }

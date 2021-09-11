@@ -1,6 +1,6 @@
 package com.juhyun.shorturl.controller.dto;
 
-import com.juhyun.shorturl.entity.ShortUrl;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ShortUrlRequest {
 
     @NotBlank(message = "longUrl must not be blank")

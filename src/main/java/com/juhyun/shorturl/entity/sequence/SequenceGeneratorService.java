@@ -21,7 +21,6 @@ public class SequenceGeneratorService {
         AutoIncrementSequence counter = mongoOperations.findAndModify(Query.query(where("_id").is(key)),
                 new Update().inc("seq", 1), options().returnNew(true).upsert(true), AutoIncrementSequence.class);
 
-        //return BigInteger.valueOf(!Objects.isNull(counter) ? counter.getSeq() : 1);
         return !Objects.isNull(counter) ? counter.getSeq() : 1;
     }
 
