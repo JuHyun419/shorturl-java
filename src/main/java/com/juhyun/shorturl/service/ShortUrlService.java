@@ -50,7 +50,7 @@ public class ShortUrlService {
          */
         Long count = shortUrlRepository.countAllDocuments();
         long maxId = (count > 0)
-                ? shortUrlRepository.findMaxShortUrl().get_id()
+                ? shortUrlRepository.findMaxShortUrl().get_id() + 1
                 : 1;
         log.info("count: " + count + ", maxId: " + maxId);
 
