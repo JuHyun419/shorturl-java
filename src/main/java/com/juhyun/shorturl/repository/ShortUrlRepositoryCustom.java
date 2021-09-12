@@ -1,9 +1,7 @@
 package com.juhyun.shorturl.repository;
 
-import com.juhyun.shorturl.entity.ShortUrl;
+public interface ShortUrlRepositoryCustom<T, ID> {
 
-public interface ShortUrlRepositoryCustom {
-
-    ShortUrl findMaxShortUrl();
+    T findMaxShortUrl();
 
 }

@@ -1,17 +1,15 @@
 package com.juhyun.shorturl.repository;
 
 import com.juhyun.shorturl.entity.ShortUrl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 
-public class ShortUrlRepositoryImpl implements ShortUrlRepositoryCustom {
+public class ShortUrlRepositoryImpl implements ShortUrlRepositoryCustom<ShortUrl, Long> {
 
-    private final MongoTemplate mongoTemplate;
-
-    public ShortUrlRepositoryImpl(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public ShortUrl findMaxShortUrl() {

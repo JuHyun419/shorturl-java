@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ShortUrlRepository extends MongoRepository<ShortUrl, String>, ShortUrlRepositoryCustom {
+public interface ShortUrlRepository extends MongoRepository<ShortUrl, Long>, ShortUrlRepositoryCustom<ShortUrl, Long> {
 
     //@Query("{originUrl :?originUrl}")
     Optional<ShortUrl> findByLongUrl(String longUrl);
